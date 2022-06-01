@@ -3,8 +3,7 @@ stages:
   jobs:
   - deployment: DeployWeb
     displayName: deploy Web App
-    pool:
-      vmImage: 'Ubuntu-latest'
+    pool: Default
     # creates an environment if it doesn't exist
     environment: 'test2'
     strategy:
