@@ -1,60 +1,13 @@
-name: k8sUIWebApp_$(SourceBranchName)_$(Date:MMMd)$(Rev:.r)
-
-# PR trigger
-pr:
-- master
-
-# CI trigger
-trigger:
-- master
-
-jobs:
-- job: Build
-  timeoutInMinutes: 15
-  cancelTimeoutInMinutes: 2
-  pool:
-    name: 'Hosted VS2017'
-
-  steps:
-  - task: NodeTool@0
-    displayName: 'Use Node version'
-    inputs:
-      versionSpec: '8.9.0'
-
-  - task: Npm@1
-    displayName: 'npm install'
-    inputs:
-      command: install
-
-  - task: Npm@1
-    displayName: 'Build source'
-    inputs:
-      command: custom
-      customCommand: 'run build'
-
-  - task: Npm@1
-    displayName: 'Prune dependencies to be production'
-    inputs:
-      command: custom
-      customCommand: 'prune --production'
-
-  - task: ArchiveFiles@2
-    displayName: 'Archive dist folder'
-    inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/'
-      includeRootFolder: false
-      archiveFile: '$(Build.ArtifactStagingDirectory)/Dist_$(Build.BuildId).zip'
-
-  - task: CopyFiles@2
-    displayName: 'Copy ARM template'
-    inputs:
-      SourceFolder: Azure
-      TargetFolder: '$(build.artifactstagingdirectory)'
-      OverWrite: true
-
-  # publish dist for master branch only
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: dist'
-      inputs:
-        ArtifactName: dist
+- stage: deploy
+  jobs:
+  - deployment: DeployWeb
+    displayName: deploy Web App
+    pool:
+      vmImage: 'Ubuntu-latest'
+    # creates an environment if it doesn't exist
+    environment: 'test2'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Hello world
