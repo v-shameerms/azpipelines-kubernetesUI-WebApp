@@ -1,3 +1,4 @@
+stages:
 - stage: deploy
   jobs:
   - deployment: DeployWeb
