@@ -5,7 +5,7 @@ stages:
     displayName: deploy Web App
     pool: Default
     # creates an environment if it doesn't exist
-    environment: 'test1'
+    environment: 'test'
     strategy:
       runOnce:
         deploy:
