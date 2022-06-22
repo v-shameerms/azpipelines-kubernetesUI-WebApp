@@ -3,9 +3,9 @@ stages:
   jobs:
   - deployment: DeployWeb
     displayName: deploy Web App
-    pool:test123
+    pool: test
     # creates an environment if it doesn't exist
-    environment: 'smarthotel-dev'
+    environment: test4
     strategy:
       runOnce:
         deploy:
